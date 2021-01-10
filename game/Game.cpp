@@ -11,6 +11,7 @@ Game::Game()
 ,mTicksCount(0)
 ,mIsRunning(true)
 ,mPaddleDir(0)
+,mOutputTicks(0)
 {
 	
 }
@@ -65,10 +66,8 @@ void Game::RunLoop()
 	while (mIsRunning)
 	{
 		ProcessInput();
-		SDL_Delay(100);
 		UpdateGame();
 		GenerateOutput();
-		
 	}
 }
 
@@ -108,11 +107,8 @@ void Game::UpdateGame()
 		;
 	
 	float deltaTime = (SDL_GetTicks() - mTicksCount) / 1000.0f;
-	std::cout << " deltaTime " << deltaTime;
 	
 	
-	
-	std::cout << " new deltaTime " << deltaTime;
 	
 	mTicksCount = SDL_GetTicks();
 	
@@ -164,6 +160,14 @@ void Game::UpdateGame()
 
 void Game::GenerateOutput()
 {
+	
+	if (SDL_GetTicks() - mOutputTicks < 500)
+	{
+		return;
+	}
+	
+	mOutputTicks = SDL_GetTicks();
+	
 	SDL_SetRenderDrawColor(
 		mRenderer,
 		0,		
